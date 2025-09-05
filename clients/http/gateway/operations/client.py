@@ -15,68 +15,56 @@ class GetOperationsSummaryQueryDict(TypedDict):
     """
     accountId: str
 
-class MakeFeeOperationQueryDict(TypedDict):
+class MakeOperationRequestDict(TypedDict):
+    """
+    Базовая структура тела запроса для создания финансовой операции.
+    """
+    status: str
+    amount: float
+    cardId: str
+    accountId: str
+
+class MakeFeeOperationRequestDict(MakeOperationRequestDict):
     """
     Структура данных для создания операции комиссии.
     """
-    status: str
-    amount: float
-    cardId: str
-    accountId: str
+    pass
 
-class MakeTopUpOperationQueryDict(TypedDict):
+class MakeTopUpOperationRequestDict(MakeOperationRequestDict):
     """
     Структура данных для создания операции пополнения.
     """
-    status: str
-    amount: float
-    cardId: str
-    accountId: str
+    pass
 
-class MakeCashbackOperationQueryDict(TypedDict):
+class MakeCashbackOperationRequestDict(MakeOperationRequestDict):
     """
     Структура данных для создания операции кэшбэка.
     """
-    status: str
-    amount: float
-    cardId: str
-    accountId: str
+    pass
 
-class MakeTransferOperationQueryDict(TypedDict):
+class MakeTransferOperationRequestDict(MakeOperationRequestDict):
     """
     Структура данных для создания операции перевода.
     """
-    status: str
-    amount: float
-    cardId: str
-    accountId: str
+    pass
 
-class MakePurchaseOperationQueryDict(TypedDict):
+class MakePurchaseOperationRequestDict(MakeOperationRequestDict):
     """
     Структура данных для создания операции покупки.
     """
-    status: str
-    amount: float
-    cardId: str
-    accountId: str
+    pass
 
-class MakeBillPaymentOperationQueryDict(TypedDict):
+class MakeBillPaymentOperationRequestDict(MakeOperationRequestDict):
     """
     Структура данных для создания операции оплаты по счету.
     """
-    status: str
-    amount: float
-    cardId: str
-    accountId: str
+    pass
 
-class MakeCashWithdrawalOperationQueryDict(TypedDict):
+class MakeCashWithdrawalOperationDict(MakeOperationRequestDict):
     """
     Структура данных для создания операции снятия наличных денег.
     """
-    status: str
-    amount: float
-    cardId: str
-    accountId: str
+    pass
 
 class OperationsGatewayHTTPClient(HTTPClient):
     """
