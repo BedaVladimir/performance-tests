@@ -1,6 +1,7 @@
 from httpx import Response, QueryParams
 from clients.http.client import HTTPClient
 from typing import TypedDict
+from clients.http.gateway.client import build_gateway_http_client
 
 
 class GetOperationsQueryDict(TypedDict):
@@ -52,7 +53,7 @@ class MakePurchaseOperationRequestDict(MakeOperationRequestDict):
     """
     Структура данных для создания операции покупки.
     """
-    pass
+    category: str
 
 class MakeBillPaymentOperationRequestDict(MakeOperationRequestDict):
     """
@@ -60,7 +61,7 @@ class MakeBillPaymentOperationRequestDict(MakeOperationRequestDict):
     """
     pass
 
-class MakeCashWithdrawalOperationDict(MakeOperationRequestDict):
+class MakeCashWithdrawalOperationRequestDict(MakeOperationRequestDict):
     """
     Структура данных для создания операции снятия наличных денег.
     """
@@ -107,7 +108,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         """
         return self.get(f"/api/v1/operations/operations/{operation_id}")
 
-    def make_fee_operation_api(self, request: MakeFeeOperationQueryDict) -> Response:
+    def make_fee_operation_api(self, request: MakeFeeOperationRequestDict) -> Response:
         """
         Выполняет POST-запрос для создания операции комиссии.
 
@@ -116,7 +117,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         """
         return self.post("/api/v1/operations/make-fee-operation", json=request)
 
-    def make_top_up_operation_api(self, request: MakeTopUpOperationQueryDict) -> Response:
+    def make_top_up_operation_api(self, request: MakeTopUpOperationRequestDict) -> Response:
         """
         Выполняет POST-запрос для создания операции пополнения.
 
@@ -125,7 +126,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         """
         return self.post("/api/v1/operations/make-top-up-operation", json=request)
 
-    def make_cashback_operation_api(self, request: MakeCashbackOperationQueryDict) -> Response:
+    def make_cashback_operation_api(self, request: MakeCashbackOperationRequestDict) -> Response:
         """
         Выполняет POST-запрос для создания операции кэшбэка.
 
@@ -134,7 +135,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         """
         return self.post("/api/v1/operations/make-cashback-operation", json=request)
 
-    def make_transfer_operation_api(self, request: MakeTransferOperationQueryDict) -> Response:
+    def make_transfer_operation_api(self, request: MakeTransferOperationRequestDict) -> Response:
         """
         Выполняет POST-запрос для создания операции перевода.
 
@@ -143,7 +144,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         """
         return self.post(" /api/v1/operations/make-transfer-operation", json=request)
 
-    def make_purchase_operation_api(self, request: MakePurchaseOperationQueryDict) -> Response:
+    def make_purchase_operation_api(self, request: MakePurchaseOperationRequestDict) -> Response:
         """
         Выполняет POST-запрос для создания операции покупки.
 
@@ -152,7 +153,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         """
         return self.post("/api/v1/operations/make-purchase-operation", json=request)
 
-    def make_bill_payment_operation_api (self, request: MakeBillPaymentOperationQueryDict) -> Response:
+    def make_bill_payment_operation_api (self, request: MakeBillPaymentOperationRequestDict) -> Response:
         """
         Выполняет POST-запрос для создания операции оплаты по счету.
 
@@ -161,7 +162,7 @@ class OperationsGatewayHTTPClient(HTTPClient):
         """
         return self.post("/api/v1/operations/make-bill-payment-operation", json=request)
 
-    def make_cash_withdrawal_operation_api  (self, request: MakeCashWithdrawalOperationQueryDict) -> Response:
+    def make_cash_withdrawal_operation_api  (self, request: MakeCashWithdrawalOperationRequestDict) -> Response:
         """
         Выполняет POST-запрос для создания операции оплаты снятия наличных денег.
 
@@ -169,3 +170,12 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :return: Объект httpx.Response
         """
         return self.post(" /api/v1/operations/make-cash-withdrawal-operation", json=request)
+
+
+def build_operations_gateway_http_client() -> OperationsGatewayHTTPClient:
+    """
+    Функция создаёт экземпляр OperationsGatewayHTTPClient с уже настроенным HTTP-клиентом.
+
+    :return: Готовый к использованию OperationsGatewayHTTPClient.
+    """
+    return OperationsGatewayHTTPClient(client=build_gateway_http_client())

@@ -1,6 +1,8 @@
 from httpx import Response
 from clients.http.client import HTTPClient, QueryParams
 from typing import TypedDict
+from clients.http.gateway.client import build_gateway_http_client
+
 
 class GetAccountQueryDict(TypedDict):
     """
@@ -81,3 +83,12 @@ class AccountsGatewayHTTPClient(HTTPClient):
         :return: Объект httpx.Response.
         """
         return self.post("/api/v1/accounts/open-deposit-account", json=request)
+
+
+def build_accounts_gateway_http_client() -> AccountsGatewayHTTPClient:
+    """
+    Функция создаёт экземпляр AccountsGatewayHTTPClient с уже настроенным HTTP-клиентом.
+
+    :return: Готовый к использованию AccountsGatewayHTTPClient.
+    """
+    return AccountsGatewayHTTPClient(client=build_gateway_http_client())
