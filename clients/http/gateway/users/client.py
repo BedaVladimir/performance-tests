@@ -53,7 +53,7 @@ class UsersGatewayHTTPClient(HTTPClient):
         :param user_id: Идентификатор пользователя.
         :return: Ответ от сервера (объект httpx.Response).
         """
-        return self.get(f"/api/v1/users{user_id}")
+        return self.get(f"/api/v1/users/{user_id}")
 
     def create_user_api(self, request) -> Response:
         """

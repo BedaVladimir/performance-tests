@@ -116,7 +116,7 @@ class AccountsGatewayHTTPClient(HTTPClient):
         :param request: Словарь с userId.
         :return: Объект httpx.Response
         """
-        return self.post("/api/v1/accounts/open-deposit-account", json=request)
+        return self.post("/api/v1/accounts/open-savings-account", json=request)
 
     def open_debit_card_account_api(self, request: OpenDebitCardAccountRequestDict) -> Response:
         """
@@ -125,7 +125,7 @@ class AccountsGatewayHTTPClient(HTTPClient):
         :param request: Словарь с userId.
         :return: Объект httpx.Response.
         """
-        return self.post("/api/v1/accounts/open-deposit-account", json=request)
+        return self.post("/api/v1/accounts/open-debit-card-account", json=request)
 
     def open_credit_card_account_api(self, request: OpenCreditCardAccountRequestDict) -> Response:
         """
@@ -134,7 +134,7 @@ class AccountsGatewayHTTPClient(HTTPClient):
         :param request: Словарь с userId.
         :return: Объект httpx.Response.
         """
-        return self.post("/api/v1/accounts/open-deposit-account", json=request)
+        return self.post("/api/v1/accounts/open-credit-card-account", json=request)
 
     def get_accounts(self, user_id) -> GetAccountsQueryDict:
         query = GetAccountsQueryDict(userId=user_id)
