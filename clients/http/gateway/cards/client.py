@@ -4,26 +4,57 @@ from clients.http.client import HTTPClient
 from clients.http.gateway.client import build_gateway_http_client
 
 
-class CreateVirtualCartRequestDict(TypedDict):
+class CardDict(TypedDict):
+    """
+    Описание структуры карты.
+    """
+    id: str
+    pin: str
+    cvv: str
+    status: str
+    accountId: str
+    cardNumber: str
+    cardHolder: str
+    expiryDate: str
+    paymentSystem: str
+
+
+class CreateVirtualCardRequestDict(TypedDict):
     """
     Структура данных для создания новой виртуальной карты.
     """
     userId: str
     accountId: str
 
-class CreatePhysicalCartRequestDict(TypedDict):
+
+class CreateVirtualCardResponseDict(TypedDict):
+    """
+    Описание структуры ответа выпуска виртуальной карты.
+    """
+    card: CardDict
+
+
+class CreatePhysicalCardRequestDict(TypedDict):
     """
     Структура данных для создания новой физической карты.
     """
     userId: str
     accountId: str
 
+
+class CreatePhysicalCardResponseDict(TypedDict):
+    """
+    Описание структуры ответа выпуска физической карты.
+    """
+    card: CardDict
+
+
 class CardsGatewayHTTPClient(HTTPClient):
     """
     Клиент для взаимодействия с /api/v1/cards сервиса http-gateway.
     """
 
-    def issue_virtual_card_api(self, request: CreateVirtualCartRequestDict) -> Response:
+    def issue_virtual_card_api(self, request: CreateVirtualCardRequestDict) -> Response:
         """
         Создание виртуальной карты.
         :param request: Словарь с данными новой виртуальной карты.
@@ -31,13 +62,23 @@ class CardsGatewayHTTPClient(HTTPClient):
         """
         return self.post("/api/v1/cards/issue-virtual-card", json=request)
 
-    def issue_physical_card_api(self, request: CreatePhysicalCartRequestDict) -> Response:
+    def issue_physical_card_api(self, request: CreatePhysicalCardRequestDict) -> Response:
         """
         Создание физической карты.
         :param request: Словарь с данными новой физической карты.
         :return: Ответ от сервера (объект httpx.Response).
         """
         return self.post("/api/v1/cards/issue-physical-card", json=request)
+
+    def issue_virtual_card(self, user_id: str, account_id: str) -> CreateVirtualCardResponseDict:
+        request = CreateVirtualCardRequestDict(userId=user_id, accountId=account_id)
+        response = self.issue_virtual_card_api(request)
+        return response.json()
+
+    def issue_physical_card(self, user_id: str, account_id: str) -> CreatePhysicalCardResponseDict:
+        request = CreatePhysicalCardRequestDict(userId=user_id, accountId=account_id)
+        response = self.issue_physical_card_api(request)
+        return response.json()
 
 
 def build_cards_gateway_http_client() -> CardsGatewayHTTPClient:
