@@ -136,7 +136,7 @@ class AccountsGatewayHTTPClient(HTTPClient):
         """
         return self.post("/api/v1/accounts/open-credit-card-account", json=request)
 
-    def get_accounts(self, user_id) -> GetAccountsQueryDict:
+    def get_accounts(self, user_id) -> GetAccountsResponseDict:
         query = GetAccountsQueryDict(userId=user_id)
         response = self.get_accounts_api(query)
         return response.json()
