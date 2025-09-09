@@ -27,12 +27,12 @@ class CardsGatewayHTTPClient(HTTPClient):
         return self.post("/api/v1/cards/issue-physical-card", json=request)
 
     def issue_virtual_card(self, user_id: str, account_id: str) -> IssueVirtualCardResponseSchema:
-        request = IssueVirtualCardRequestSchema(userId=user_id, accountId=account_id)
+        request = IssueVirtualCardRequestSchema(user_id=user_id, account_id=account_id)
         response = self.issue_virtual_card_api(request)
         return IssueVirtualCardResponseSchema.model_validate_json(response.text)
 
     def issue_physical_card(self, user_id: str, account_id: str) -> IssuePhysicalCardResponseSchema:
-        request = IssuePhysicalCardRequestSchema(userId=user_id, accountId=account_id)
+        request = IssuePhysicalCardRequestSchema(user_id=user_id, account_id=account_id)
         response = self.issue_physical_card_api(request)
         return IssuePhysicalCardResponseSchema.model_validate_json(response.text) 
 
