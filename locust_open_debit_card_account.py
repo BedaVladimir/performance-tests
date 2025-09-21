@@ -30,5 +30,8 @@ class OpenDebitCardAccount(HttpUser):
 
     @task
     def make_debit_card_account(self):
+        """
+        Тест создания дебетового счета
+        """
         open_debit_card_account_request = {"userId": self.user_data['user']['id']}
         self.client.post("/api/v1/accounts/open-debit-card-account", json=open_debit_card_account_request)
