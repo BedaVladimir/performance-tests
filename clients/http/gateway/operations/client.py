@@ -1,5 +1,5 @@
 from httpx import Response, QueryParams
-from clients.http.client import HTTPClient
+from clients.http.client import HTTPClient, HTTPCClientExtensions
 from clients.http.gateway.client import build_gateway_http_client
 from clients.http.gateway.operations.schema import (
     MakeFeeOperationRequestSchema, MakeTopUpOperationRequestSchema,
@@ -27,7 +27,11 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :param query: Словарь с параметрами запроса, например: {'accountId': '123'}.
         :return: Объект httpx.Response с данными о счетах.
         """
-        return self.get("/api/v1/operations", params=QueryParams(**query.model_dump(by_alias=True)))
+        return self.get(
+            "/api/v1/operations",
+            params=QueryParams(**query.model_dump(by_alias=True)),
+            extensions=HTTPCClientExtensions(route="/api/v1/operations")
+        )
 
     def get_operations_summary_api(self, query: GetOperationsSummaryQuerySchema) -> Response:
         """
@@ -36,8 +40,11 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :param query: Словарь с параметрами запроса, например: {'accountId': '123'}.
         :return: Объект httpx.Response с данными о счетах.
         """
-        return self.get("/api/v1/operations/operations-summary",
-                        params=QueryParams(**query.model_dump(by_alias=True)))
+        return self.get(
+            "/api/v1/operations/operations-summary",
+                        params=QueryParams(**query.model_dump(by_alias=True)),
+                        extensions=HTTPCClientExtensions(route="/api/v1/operations/operations-summary")
+        )
 
     def get_operation_receipt_api(self, operation_id: str) -> Response:
         """
@@ -46,7 +53,10 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :param operation_id: Идентификатор счета.
         :return: Ответ от сервера (объект httpx.Response).
         """
-        return self.get(f"/api/v1/operations/operations-receipt/{operation_id}")
+        return self.get(
+            f"/api/v1/operations/operations-receipt/{operation_id}",
+            extensions=HTTPCClientExtensions(route="/api/v1/operations/operations-receipt/{operation_id}")
+        )
 
     def get_operations_api(self, operation_id: str) -> Response:
         """
@@ -55,7 +65,10 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :param operation_id: Идентификатор счета.
         :return: Ответ от сервера (объект httpx.Response).
         """
-        return self.get(f"/api/v1/operations/operations/{operation_id}")
+        return self.get(
+            f"/api/v1/operations/operations/{operation_id}",
+            extensions=HTTPCClientExtensions(route="/api/v1/operations/operations/{operation_id}")
+        )
 
     def get_operations(self, account_id: str) -> GetOperationsResponseSchema:
         query = GetOperationQuerySchema(account_id=account_id)

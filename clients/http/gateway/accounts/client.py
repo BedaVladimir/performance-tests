@@ -1,10 +1,11 @@
-from httpx import Response
-from clients.http.client import HTTPClient, QueryParams
+from httpx import Response, QueryParams
+from clients.http.client import HTTPClient, HTTPCClientExtensions
 from clients.http.gateway.accounts.schema import GetAccountsQuerySchema, OpenDepositAccountRequestSchema, \
     OpenSavingsAccountRequestSchema, OpenDebitCardAccountRequestSchema, OpenCreditCardAccountRequestSchema, \
     GetAccountsResponseSchema, OpenDepositAccountResponseSchema, OpenSavingsAccountResponseSchema, \
     OpenDebitCardAccountResponseSchema, OpenCreditCardAccountResponseSchema
-from clients.http.gateway.client import build_gateway_http_client
+from clients.http.gateway.client import build_gateway_http_client, build_gateway_locust_http_client
+from locust.env import Environment
 
 
 class AccountsGatewayHTTPClient(HTTPClient):
@@ -19,7 +20,11 @@ class AccountsGatewayHTTPClient(HTTPClient):
         :param query: Словарь с параметрами запроса, например: {'userId': '123'}.
         :return: Объект httpx.Response с данными о счетах.
         """
-        return self.get(f"/api/v1/accounts", params=QueryParams(**query.model_dump(by_alias=True)))
+        return self.get(
+            f"/api/v1/accounts",
+            params=QueryParams(**query.model_dump(by_alias=True)),
+            extensions=HTTPCClientExtensions(route="/api/v1/accounts")
+        )
 
     def open_deposit_account_api(self, request: OpenDepositAccountRequestSchema) -> Response:
         """
@@ -89,3 +94,16 @@ def build_accounts_gateway_http_client() -> AccountsGatewayHTTPClient:
     :return: Готовый к использованию AccountsGatewayHTTPClient.
     """
     return AccountsGatewayHTTPClient(client=build_gateway_http_client())
+
+
+def build_accounts_gateway_locust_http_client(environment: Environment) -> AccountsGatewayHTTPClient:
+    """
+    Функция создаёт экземпляр AccountsGatewayHTTPClient адаптированного под Locust.
+
+    Клиент автоматически собирает метрики и передаёт их в Locust через хуки.
+    Используется исключительно в нагрузочных тестах.
+
+    :param environment: объект окружения Locust.
+    :return: экземпляр AccountsGatewayHTTPClient с хуками сбора метрик.
+    """
+    return AccountsGatewayHTTPClient(client=build_gateway_locust_http_client(environment))
