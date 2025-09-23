@@ -1,7 +1,7 @@
 from grpc import Channel
-
+from locust.env import Environment
 from clients.grpc.client import GRPCClient
-from clients.grpc.gateway.client import build_gateway_grpc_client
+from clients.grpc.gateway.client import build_gateway_grpc_client, build_gateway_locust_grpc_client
 from contracts.services.gateway.operations.operations_gateway_service_pb2_grpc import OperationsGatewayServiceStub
 from contracts.services.gateway.operations.rpc_get_operation_receipt_pb2 import (
     GetOperationReceiptRequest,
@@ -242,6 +242,7 @@ class OperationsGatewayGRPCClient(GRPCClient):
         )
         return self.make_cash_withdrawal_operation_api(request)
 
+
 def build_operations_gateway_grpc_client() -> OperationsGatewayGRPCClient:
     """
     Фабрика для создания экземпляра OperationsGatewayGRPCClient.
@@ -249,3 +250,12 @@ def build_operations_gateway_grpc_client() -> OperationsGatewayGRPCClient:
     :return: Инициализированный клиент для OperationsGatewayService.
     """
     return OperationsGatewayGRPCClient(channel=build_gateway_grpc_client())
+
+
+def build_operations_gateway_locust_grpc_client(environment: Environment) -> OperationsGatewayGRPCClient:
+    """
+    Фабрика для создания экземпляра OperationsGatewayGRPCClient.
+
+    :return: Инициализированный клиент для OperationsGatewayService.
+    """
+    return OperationsGatewayGRPCClient(channel=build_gateway_locust_grpc_client(environment))
