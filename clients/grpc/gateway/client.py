@@ -1,6 +1,5 @@
-from grpc import Channel, insecure_channel
+from grpc import Channel, insecure_channel, intercept_channel
 from clients.grpc.interceptors.locust_interceptors import LocustInterceptor
-from grpc_interceptors import intercept_channel
 from locust.env import Environment
 
 
