@@ -39,17 +39,17 @@ class GetDocumentsTaskSet(GatewayGRPCTaskSet):
         self.accounts_gateway_client.get_accounts(user_id=self.seed_user.user_id)
 
     @task(2)
-    def get_tariff_document(self):
-        # Загружаем тарифный документ по сберегательному счёту
-        self.documents_gateway_client.get_tariff_document(
-            account_id=self.seed_user.savings_accounts[0].account_id
+    def get_operations(self):
+        # Запрашиваем список операций для счета
+        self.operations_gateway_client.get_operations(
+            account_id=self.seed_user.credit_card_accounts[0].account_id
         )
 
     @task(2)
-    def get_contract_document(self):
-        # Загружаем договор по дебетовой карте
-        self.documents_gateway_client.get_contract_document(
-            account_id=self.seed_user.debit_card_accounts[0].account_id
+    def get_operations_summary(self):
+        # Получаем статистику операций по определенному счету
+        self.operations_gateway_client.get_operations_summary(
+            account_id=self.seed_user.credit_card_accounts[0].account_id
         )
 
     # Конкретный пользовательский класс, у которого в качестве задач используется GetDocumentsTaskSet
