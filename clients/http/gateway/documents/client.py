@@ -4,6 +4,9 @@ from clients.http.client import HTTPClient, HTTPCClientExtensions
 from clients.http.gateway.documents.schema import GetTariffDocumentResponseSchema, GetContractDocumentResponseSchema
 from locust.env import Environment
 
+from tools.routes import APIRoutes
+
+
 class DocumentsGatewayHTTPClient(HTTPClient):
     """
     Клиент для взаимодействия с /api/v1/documents сервиса http-gateway.
@@ -17,8 +20,8 @@ class DocumentsGatewayHTTPClient(HTTPClient):
         :return: Ответ от сервера (объект httpx.Response).
         """
         return self.get(
-            f"/api/v1/documents/tariff-document/{account_id}",
-            extensions=HTTPCClientExtensions(route="/api/v1/documents/tariff-document/{account_id}")
+            f"{APIRoutes.DOCUMENTS}/tariff-document/{account_id}",
+            extensions=HTTPCClientExtensions(route=f"{APIRoutes.DOCUMENTS}/tariff-document/{{account_id}}")
         )
 
     def get_contract_document_api(self, account_id: str) -> Response:
@@ -29,8 +32,8 @@ class DocumentsGatewayHTTPClient(HTTPClient):
         :return: Ответ от сервера (объект httpx.Response).
         """
         return self.get(
-            f"/api/v1/documents/contract-document/{account_id}",
-            extensions=HTTPCClientExtensions(route="/api/v1/documents/contract-document/{account_id}")
+            f"{APIRoutes.DOCUMENTS}/contract-document/{account_id}",
+            extensions=HTTPCClientExtensions(route=f"{APIRoutes.DOCUMENTS}/contract-document/{{account_id}}")
         )
 
     def get_tariff_document(self, account_id: str) -> GetTariffDocumentResponseSchema:

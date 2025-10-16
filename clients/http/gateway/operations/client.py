@@ -14,6 +14,9 @@ from clients.http.gateway.operations.schema import (
 )
 from locust.env import Environment
 
+from tools.routes import APIRoutes
+
+
 class OperationsGatewayHTTPClient(HTTPClient):
     """
     Клиент для взаимодействия с /api/v1/operations сервиса http-gateway.
@@ -28,9 +31,9 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :return: Объект httpx.Response с данными о счетах.
         """
         return self.get(
-            "/api/v1/operations",
+            APIRoutes.OPERATIONS,
             params=QueryParams(**query.model_dump(by_alias=True)),
-            extensions=HTTPCClientExtensions(route="/api/v1/operations")
+            extensions=HTTPCClientExtensions(route=APIRoutes.OPERATIONS)
         )
 
     def get_operations_summary_api(self, query: GetOperationsSummaryQuerySchema) -> Response:
@@ -41,9 +44,9 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :return: Объект httpx.Response с данными о счетах.
         """
         return self.get(
-            "/api/v1/operations/operations-summary",
+            f"{APIRoutes.OPERATIONS}/operations-summary",
                         params=QueryParams(**query.model_dump(by_alias=True)),
-                        extensions=HTTPCClientExtensions(route="/api/v1/operations/operations-summary")
+                        extensions=HTTPCClientExtensions(route=f"{APIRoutes.OPERATIONS}/operations-summary")
         )
 
     def get_operation_receipt_api(self, operation_id: str) -> Response:
@@ -54,8 +57,8 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :return: Ответ от сервера (объект httpx.Response).
         """
         return self.get(
-            f"/api/v1/operations/operations-receipt/{operation_id}",
-            extensions=HTTPCClientExtensions(route="/api/v1/operations/operations-receipt/{operation_id}")
+            f"{APIRoutes.OPERATIONS}/operations-receipt/{operation_id}",
+            extensions=HTTPCClientExtensions(route=f"{APIRoutes.OPERATIONS}/operations-receipt/{{operation_id}}")
         )
 
     def get_operations_api(self, operation_id: str) -> Response:
@@ -66,8 +69,8 @@ class OperationsGatewayHTTPClient(HTTPClient):
         :return: Ответ от сервера (объект httpx.Response).
         """
         return self.get(
-            f"/api/v1/operations/operations/{operation_id}",
-            extensions=HTTPCClientExtensions(route="/api/v1/operations/operations/{operation_id}")
+            f"{APIRoutes.OPERATIONS}/operations/{operation_id}",
+            extensions=HTTPCClientExtensions(route=f"{APIRoutes.OPERATIONS}/operations/{{operation_id}}")
         )
 
     def get_operations(self, account_id: str) -> GetOperationsResponseSchema:
