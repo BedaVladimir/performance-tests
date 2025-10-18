@@ -86,7 +86,7 @@ jobs:
       - name: Archive the report artifact
         uses: actions/upload-artifact@v4
         with:
-          name: locust_reports-${{ github.run_id }}
+          name: load_test_reports
           path: /reports
 
       # 11. Корректно останавливаем docker-контейнеры и удаляем volume-ы (например, temp-файлы)
@@ -105,7 +105,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: locust_reports-${{ github.run_id }}
+          name: load_test_reports
           path: reports
 
       # 2. Копирование загруженной директории reports в корень рабочего пространства
