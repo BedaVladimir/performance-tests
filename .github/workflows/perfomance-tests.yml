@@ -1,31 +1,32 @@
-name: Perfomance Tests  # Название workflow — отображается в UI GitHub Actions
+name: Performance Tests  # Название workflow — отображается в UI GitHub Actions
 
 on:
-  workflow_dispatch:  # Позволяет запускать workflow вручную через UI GitHub
+  workflow_dispatch: # Позволяет запускать workflow вручную через UI GitHub
     inputs:
       SCENARIO:
-      type: 'choice'  # Пользователь должен выбрать один из заранее заданных конфигов
-      default: './scenarios/grpc/gateway/new_user_get_accounts/v1.0.conf'
-      options:
-        # grpc-сценарии
-        - ./scenarios/grpc/gateway/existing_user_get_documents/v1.0.conf
-        - ./scenarios/grpc/gateway/existing_user_get_operations/v1.0.conf
-        - ./scenarios/grpc/gateway/existing_user_issue_virtual_card/v1.0.conf
-        - ./scenarios/grpc/gateway/existing_user_make_purchase_operation/v1.0.conf
-        - ./scenarios/grpc/gateway/new_user_get_accounts/v1.0.conf
-        - ./scenarios/grpc/gateway/new_user_get_documents/v1.0.conf
-        - ./scenarios/grpc/gateway/new_user_issue_physical_card/v1.0.conf
-        - ./scenarios/grpc/gateway/new_user_make_top_up_operation/v1.0.conf
-        # http-сценарии
-        - ./scenarios/http/gateway/existing_user_get_documents/v1.0.conf
-        - ./scenarios/http/gateway/existing_user_get_operations/v1.0.conf
-        - ./scenarios/http/gateway/existing_user_issue_virtual_card/v1.0.conf
-        - ./scenarios/http/gateway/existing_user_make_purchase_operation/v1.0.conf
-        - ./scenarios/http/gateway/new_user_get_accounts/v1.0.conf
-        - ./scenarios/http/gateway/new_user_get_documents/v1.0.conf
-        - ./scenarios/http/gateway/new_user_issue_physical_card/v1.0.conf
-        - ./scenarios/http/gateway/new_user_make_top_up_operation/v1.0.conf
-      description: 'Locust config file'  # Комментарий, отображаемый в UI при запуске
+        type: 'choice'  # Пользователь должен выбрать один из заранее заданных конфигов
+        default: './scenarios/grpc/gateway/new_user_get_accounts/v1.0.conf'
+        options:
+          # grpc-сценарии
+          - ./scenarios/grpc/gateway/existing_user_get_documents/v1.0.conf
+          - ./scenarios/grpc/gateway/existing_user_get_operations/v1.0.conf
+          - ./scenarios/grpc/gateway/existing_user_issue_virtual_card/v1.0.conf
+          - ./scenarios/grpc/gateway/existing_user_make_purchase_operation/v1.0.conf
+          - ./scenarios/grpc/gateway/new_user_get_accounts/v1.0.conf
+          - ./scenarios/grpc/gateway/new_user_get_documents/v1.0.conf
+          - ./scenarios/grpc/gateway/new_user_issue_physical_card/v1.0.conf
+          - ./scenarios/grpc/gateway/new_user_make_top_up_operation/v1.0.conf
+          # http-сценарии
+          - ./scenarios/http/gateway/existing_user_get_documents/v1.0.conf
+          - ./scenarios/http/gateway/existing_user_get_operations/v1.0.conf
+          - ./scenarios/http/gateway/existing_user_issue_virtual_card/v1.0.conf
+          - ./scenarios/http/gateway/existing_user_make_purchase_operation/v1.0.conf
+          - ./scenarios/http/gateway/new_user_get_accounts/v1.0.conf
+          - ./scenarios/http/gateway/new_user_get_documents/v1.0.conf
+          - ./scenarios/http/gateway/new_user_issue_physical_card/v1.0.conf
+          - ./scenarios/http/gateway/new_user_make_top_up_operation/v1.0.conf
+        required: true
+        description: 'Locust config file'  # Комментарий, отображаемый в UI при запуске
 
 jobs:
   run-tests:
